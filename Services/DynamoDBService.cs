@@ -17,7 +17,7 @@ namespace NameApp.Services
             _tableName = configuration["DynamoDB:TableName"] ?? "Names";
         }
 
-        public async Task<IEnumerable<n>> GetAllNamesAsync()
+        public async Task<IEnumerable<Name>> GetAllNamesAsync()
         {
             try
             {
@@ -27,7 +27,7 @@ namespace NameApp.Services
                 };
 
                 var response = await _dynamoDbClient.ScanAsync(scanRequest);
-                var names = new List<n>();
+                var names = new List<Name>();
 
                 foreach (var item in response.Items)
                 {
