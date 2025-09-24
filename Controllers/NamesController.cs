@@ -25,7 +25,7 @@ namespace NameApp.Controllers
             {
                 TempData["ErrorMessage"] = "Error loading names. Please try again.";
                 // Log the exception (implement logging as needed)
-                return View(new List<n>());
+                return View(new List<Name>());
             }
         }
 

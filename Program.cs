@@ -1,9 +1,11 @@
+using NameApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<INameService, DynamoDbNameService>
+builder.Services.AddScoped<INameService, DynamoDbNameService>();
 
 var app = builder.Build();
 
