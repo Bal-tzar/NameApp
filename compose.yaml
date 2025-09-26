@@ -1,0 +1,11 @@
+services:
+  nameapp:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: nameapp
+    ports:
+      - "80:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    restart: always
