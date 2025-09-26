@@ -31,11 +31,16 @@ namespace NameApp.Services
 
                 foreach (var item in response.Items)
                 {
+                    if (!item.ContainsKey("Id") || !item.ContainsKey("FullName") || !item.ContainsKey("DateAdded"))
+                        continue;
+
                     var name = new Name
                     {
                         Id = item["Id"].S,
                         FullName = item["FullName"].S,
-                        DateAdded = DateTime.Parse(item["DateAdded"].S)
+                        DateAdded = DateTime.TryParse(item["DateAdded"].S, out var dateAdded) 
+                            ? dateAdded 
+                            : DateTime.UtcNow
                     };
                     names.Add(name);
                 }
@@ -67,11 +72,16 @@ namespace NameApp.Services
                 if (response.Item == null || !response.Item.Any())
                     return null;
 
+                if (!response.Item.ContainsKey("Id") || !response.Item.ContainsKey("FullName") || !response.Item.ContainsKey("DateAdded"))
+                    return null;
+
                 return new Name
                 {
                     Id = response.Item["Id"].S,
                     FullName = response.Item["FullName"].S,
-                    DateAdded = DateTime.Parse(response.Item["DateAdded"].S)
+                    DateAdded = DateTime.TryParse(response.Item["DateAdded"].S, out var dateAdded) 
+                        ? dateAdded 
+                        : DateTime.UtcNow
                 };
             }
             catch (Exception ex)
@@ -88,7 +98,7 @@ namespace NameApp.Services
                 {
                     { "Id", new AttributeValue { S = name.Id } },
                     { "FullName", new AttributeValue { S = name.FullName } },
-                    { "DateAdded", new AttributeValue { S = name.DateAdded.ToString("yyyy-MM-ddTHH:mm:ss.fffZ") } }
+                    { "DateAdded", new AttributeValue { S = name.DateAdded.ToString("O") } } // ISO 8601 format
                 };
 
                 var request = new PutItemRequest
